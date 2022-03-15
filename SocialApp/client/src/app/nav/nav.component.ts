@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 
+
 import { AccountService } from '../_services/account.service';
 
 
@@ -13,12 +14,15 @@ export class NavComponent implements OnInit {
 
   model: any={};
   loggedIn: boolean=false;
+  
 
 
 
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.getCurrentUser();
+  
   }
 
   login(){
@@ -31,8 +35,18 @@ export class NavComponent implements OnInit {
   }
 
   logout(){
+    this.accountService.logout();
     this.loggedIn=false;
   }
+
+  getCurrentUser(){
+    this.accountService.currentUser$.subscribe(user=>{
+     this.loggedIn=!!user; //User boject turns into boolean
+    }, error=>{
+      console.log(error);
+    })
+  }
+
  
   }
 
