@@ -26,4 +26,8 @@ users: any;
     })
   }
 
+  cancelRegisterMode(event: boolean){
+    this.registerMode=event;
+  }
+
 }
