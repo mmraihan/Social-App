@@ -41,9 +41,19 @@ namespace API.Controllers
         [HttpGet("server-error")]
         public ActionResult<string> GerServerError()
         {
-            var thing = _context.Users.Find(-1);
-            var thingToReturn = thing.ToString();
-            return thingToReturn;
+            try
+            {
+                var thing = _context.Users.Find(-1);
+                var thingToReturn = thing.ToString();
+                return thingToReturn;
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Computer says No!");
+            }
+
+          
         }
 
         [HttpGet("bad-request")]
