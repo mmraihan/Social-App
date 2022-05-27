@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly DataContext _db;
@@ -21,13 +21,13 @@ namespace API.Controllers
            _db = db;
         }
 
-        [AllowAnonymous]
+    
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             return  await _db.Users.ToListAsync();
         }
-        [Authorize]
+     
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
@@ -35,3 +35,4 @@ namespace API.Controllers
         }
     }
 }
+
