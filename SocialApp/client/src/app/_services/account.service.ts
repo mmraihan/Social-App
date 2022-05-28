@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, ReplaySubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { User } from '../_models/user';
 })
 export class AccountService {
 
-  baseUrl='https://localhost:44328/api/'
+  baseUrl= environment;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$=this.currentUserSource.asObservable();
 
