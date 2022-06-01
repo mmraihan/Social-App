@@ -50,6 +50,7 @@ namespace API.Controllers
 
             _mapper.Map(memberUpdateDto, user);
 
+
             _userRepository.Update(user);
 
             if (await _userRepository.SaveAllAsync())
