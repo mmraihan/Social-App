@@ -24,10 +24,11 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
     
@@ -62,7 +63,7 @@ namespace API.Controllers
 
             return BadRequest("Failed to update user");
         }
-
+        [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
             var user = await _userRepository.GetUserByUserNameAsync(User.GetUsername()); //Using Extension Method
@@ -74,7 +75,6 @@ namespace API.Controllers
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId,
                
-
             };
 
             if (user.Photos.Count==0)
