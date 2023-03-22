@@ -22,12 +22,14 @@
         </ul>
 
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-          <img src="{{user.photoUrl || './assets/user.png' }}" alt="{{user.userName}}">
-          <a class="dropdown-toggle text-light text-decoration-none ml-2" dropdownToggle>Welcome {{user.userName | titlecase}}</a>
+          <img src="{{user.photoUrl || './assets/user.png' }}" 
+            alt="{{user.userName}}">
+          <a class="dropdown-toggle text-light text-decoration-none ml-2" dropdownToggle>Welcome {{user.knownAs |
+            titlecase}}</a>
           <div class="dropdown-menu mt-3" *dropdownMenu>
             <a class="dropdown-item" routerLink="member/edit">Edit Profile</a>
             <div class="dropdwon-divider"></div>
-            <a class="dropdown-item" (click)="logout()" >Logout</a>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
         </div>
 
