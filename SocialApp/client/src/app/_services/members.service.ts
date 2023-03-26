@@ -1,10 +1,12 @@
 import { PaginatedResult } from './../_models/pagination';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
-import { map, of, retry } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, of, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { UserParams } from '../_models/usersParams';
+import { AccountService } from './account.service';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -13,12 +15,21 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
   memberCache = new Map();
+  userParams: UserParams;
+  user: User;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private accountService: AccountService
+  ) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe((user) => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    });
+  }
 
   getMembrs(userParams: UserParams) {
     var response = this.memberCache.get(Object.values(userParams).join('-'));
-    console.log(response);
     if (response) {
       return of(response);
     }
@@ -94,5 +105,19 @@ export class MembersService {
     params = params.append('pageSize', pageSize.toString());
 
     return params;
+  }
+
+  getUserParams(){
+    return this.userParams;
+  }
+
+
+  setUserParams(params: UserParams){
+    return this.userParams= params;
+  }
+
+  resetFilters(){
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
   }
 }
