@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -25,24 +26,24 @@ namespace API.Data
             return userLike;
         }
 
-        public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int userId)
+        public async Task<PagedList<LikeDto>> GetUserLikes(LikeParams likeParams)
         {
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
-            if (predicate == "liked")
+            if (likeParams.Predicate == "liked")
             {
-                likes = likes.Where(like => like.SourceUserId == userId);
+                likes = likes.Where(like => like.SourceUserId == likeParams.UserId);
                 users = likes.Select(like => like.LikedUser);
             }
 
-            if (predicate == "likedBy")
+            if (likeParams.Predicate == "likedBy")
             {
-                likes = likes.Where(like => like.LikedUserId == userId);
+                likes = likes.Where(like => like.LikedUserId == likeParams.UserId);
                 users = likes.Select(like => like.SourceUser);
             }
 
-            return await users.Select(user => new LikeDto
+            var likedUsers = users.Select(user => new LikeDto
             {
                 Id = user.Id,
                 UserName = user.UserName,
@@ -50,7 +51,9 @@ namespace API.Data
                 Age = user.DateOfBirth.CalculateAge(),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
                 City = user.City
-            }).ToListAsync();
+            });
+
+            return await PagedList<LikeDto>.CreateAsync(likedUsers, likeParams.PageNumber, likeParams.pageSize);
         }
 
         public async Task<AppUser> GetUserWithLikes(int userId)
