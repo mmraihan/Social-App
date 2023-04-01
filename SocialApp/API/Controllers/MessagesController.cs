@@ -1,10 +1,13 @@
 ﻿using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -24,7 +27,6 @@ namespace API.Controllers
             _messageRepository = messageRepository;
             _mapper = mapper;
             _userRepository = userRepository;
-
         }
 
         [HttpPost]
@@ -34,7 +36,7 @@ namespace API.Controllers
 
             if (userName == createMessageDto.RecipientUserName.ToLower())
             {
-                return BadRequest("You cannot send messages to youself");
+                return BadRequest("You cannot send messages to yourself");
             }
 
             var sender = await _userRepository.GetUserByUserNameAsync(userName);
@@ -62,6 +64,18 @@ namespace API.Controllers
 
             return BadRequest("Failed to send message");
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
+        {
+            messageParams.UserName=User.GetUsername();
+
+            var messages = await _messageRepository.GetMessageForUser(messageParams);
+
+            Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
+
+            return messages;
         }
 
     }
