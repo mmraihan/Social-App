@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
     [Authorize]
-    public class MessagesController : ControllerBase
+    public class MessagesController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMessageRepository _messageRepository;
@@ -30,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageDto>> CreateMessage([FromBody] CreateMessageDto createMessageDto)
+        public async Task<ActionResult<MessageDto>> CreateMessage( CreateMessageDto createMessageDto)
         {
             var userName = User.GetUsername();
 

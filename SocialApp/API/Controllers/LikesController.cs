@@ -12,8 +12,7 @@ namespace API.Controllers
 {
   
     [Authorize]
-    [Route("api/[controller]")]
-    public class LikesController : ControllerBase
+    public class LikesController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
         private readonly ILikesRepository _likesRepository;
