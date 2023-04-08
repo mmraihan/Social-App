@@ -1,13 +1,13 @@
 <div class="row mb-4">
     <div class="btn-group col-md-4" name="container">
         <button class="btn btn-success" style="margin-right: 8px" btnRadio="Unread" [(ngModel)]="container" (click)="loadMessage()">
-            <i class="fa fa-envelope"></i>Unread
+            <i class="fa fa-envelope"></i> Unread
         </button>
         <button class="btn btn-success" style="margin-right: 8px" btnRadio="Inbox" [(ngModel)]="container" (click)="loadMessage()">
-            <i class="fa fa-envelope-open"></i>Inbox
+            <i class="fa fa-envelope-open"></i> Inbox
         </button>
         <button class="btn btn-success" style="margin-right: 8px" btnRadio="Outbox" [(ngModel)]="container" (click)="loadMessage()">
-            <i class="fa fa-paper-plane"></i>Outbox
+            <i class="fa fa-paper-plane"></i> Outbox
         </button>
     </div>
 </div>
@@ -35,13 +35,13 @@
                 
                 <td>
                     <div *ngIf="container==='Outbox'">
-                        <img  class="img-circle rounded-circle mr-2"
+                        <img  class="img-circle rounded-circle"
                         src="{{message.recipientPhotoUrl || './assets/user.png'}}" 
                         alt="{{message.recipientUserName}}">
                         <strong>{{message.recipientUserName | titlecase}}</strong>
                     </div>
                     <div *ngIf="container !== 'Outbox'">
-                        <img  class="img-circle rounded-circle mr-2"
+                        <img  class="img-circle rounded-circle"
                         src="{{message.senderPhotoUrl || './assets/user.png'}}"
                          alt="{{message.senderUserName}}">
                         <strong>{{message.senderUserName | titlecase}}</strong>
