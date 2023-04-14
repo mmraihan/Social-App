@@ -21,4 +21,8 @@ export class MessageService {
       this.http
     );
   }
+
+  getMessagesThread(userName: string){
+    return this.http.get<Message[]>(this.baseUrl+ 'messages/thread/' + userName);
+  }
 }
