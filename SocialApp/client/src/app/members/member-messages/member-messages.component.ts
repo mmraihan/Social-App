@@ -9,21 +9,15 @@ import { Component, OnInit,Input } from '@angular/core';
   styleUrls: ['./member-messages.component.scss']
 })
 export class MemberMessagesComponent implements OnInit {
-  @Input() userName: string;
-  messages: Message[];
+ 
+   @Input() messages: Message[];
 
-  constructor(private messageService: MessageService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.loadMessages();
+  
   }
 
-  loadMessages(){
-    this.messageService.getMessagesThread(this.userName).subscribe(res=>{
-      this.messages=res;
-      console.log(this.messages)
-    })
-
-  }
+  
 
 }
